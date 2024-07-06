@@ -35,9 +35,9 @@ export default function Login() {
             }
 
             toast.success('Login realizado com sucesso');
-            setTimeout(() => {
-                router.push('/');
-            }, 2000);
+
+            router.push('/');
+
         } catch (error) {
             toast.error('Ocorreu um erro ao tentar fazer login.');
         } finally {

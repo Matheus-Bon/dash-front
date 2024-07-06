@@ -1,3 +1,6 @@
+'use server'
+
+import { cookies } from 'next/headers'
 import api from "../api";
 
 const login = async (body) => {
@@ -10,7 +13,20 @@ const login = async (body) => {
         }
     }
 
-    return await api(route, options, body);
+    const { statusCode, data, status, message } = await api(route, options, body);
+
+    if (statusCode === 200) {
+        cookies().set(
+            'jwt',
+            data.accessToken,
+            {
+                secure: true,
+                httpOnly: true
+            }
+        )
+    }
+
+    return { statusCode, data, status, message };
 }
 
 export default login;
