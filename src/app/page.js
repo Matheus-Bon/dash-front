@@ -21,6 +21,7 @@ export default function Home() {
   const orders = [
     {
       "name": 'Matheus',
+      "phone": "5521967505770",
       "_id": "6676fd98186b9862e7001181",
       "status": "pending",
       "delivery": true,
@@ -39,8 +40,26 @@ export default function Home() {
           "flavors": [
             {
               "id": "6679b922fd55fb32e82c1991",
+              "name": "Quibe",
+              "quantity": 50,
+              "total_price_flavor": 5000
+            },
+            {
+              "id": "6679b922fd55fb32e82c1991",
               "name": "Coxinha",
-              "quantity": 100,
+              "quantity": 50,
+              "total_price_flavor": 5000
+            },
+            {
+              "id": "6679b922fd55fb32e82c1991",
+              "name": "Queijo",
+              "quantity": 50,
+              "total_price_flavor": 5000
+            },
+            {
+              "id": "6679b922fd55fb32e82c1991",
+              "name": "Coxinha",
+              "quantity": 50,
               "total_price_flavor": 5000
             }
           ]

@@ -4,6 +4,8 @@ import Divider from '@mui/material/Divider';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
 import PrintIcon from '@mui/icons-material/Print';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 
 {/* <button
     onClick={onClose}
@@ -13,21 +15,34 @@ import PrintIcon from '@mui/icons-material/Print';
 </button> */}
 
 export default function OrderModal({ order, onClose }) {
+
+    let productsToText = '';
+    for (const product of order.products) {
+        productsToText += `${product.quantity}x ${product.name}\n`;
+        for (const flavor of product.flavors) {
+            productsToText += `\t${flavor.quantity}x ${flavor.name}\n`;
+        }
+    }
+
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div className="bg-white rounded-lg p-6 shadow-md max-w-3xl w-full">
-                <div className='flex flex-row justify-between'>
+                <section className='flex flex-row justify-between'>
                     <div className="flex flex-col mb-4 gap-1">
                         <h2 className="text-3xl font-semibold">
                             {order.name}
                         </h2>
                         <span className='flex gap-2'>
                             <p>Pedido #{order.orderCode}</p>
-                            <p>*</p>
+                            <p>-</p>
                             <p>
                                 Feito às <span className='font-bold'>
                                     {new Date(order.updatedAt).getHours()}:{new Date(order.updatedAt).getMinutes()}
                                 </span>
+                            </p>
+                            <p>-</p>
+                            <p>
+                                {order.status}
                             </p>
                         </span>
                     </div>
@@ -55,75 +70,39 @@ export default function OrderModal({ order, onClose }) {
                             <CancelIcon />
                         </button>
                     </div>
-                </div>
+                </section>
 
                 <Divider className='mb-5' />
 
-                <div className="mb-4">
-                    <p className="mb-2">
-                        <strong>Status:</strong> {order.status}
-                    </p>
-                    <p className="mb-2">
-                        <strong>Delivery:</strong> {order.delivery ? 'Sim' : 'Não'}
-                    </p>
-                    <p className="mb-2">
-                        <strong>Atualizado em:</strong> {new Date(order.updatedAt).toLocaleString()}
-                    </p>
-                    <p className="mb-2">
-                        <strong>Método de Pagamento:</strong> {order.payment}
-                    </p>
-                    <p className="mb-2">
-                        <strong>Preço Total:</strong> {formatPrice(order.total_price)}
-                    </p>
+                <seaction className='flex flex-col gap-3'>
+                    <div className='m-2 p-4 border bg-slate-50'>
+                        <div className='flex flex-row justify-between gap-2'>
+                            <LocationOnIcon />
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia eveniet reprehenderit omnis facere odit impedit aliquam debitis unde, commodi consequuntur blanditiis excepturi fugit? Laborum quae inventore nemo maxime amet cumque!
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className='m-2 p-4 border bg-slate-50'>
+                        <div className='flex flex-row justify-start gap-2'>
+                            <TextSnippetIcon />
+                            <pre className='whitespace-pre-wrap'>
+                                {productsToText}
+                            </pre>
+                        </div>
+                    </div>
+                </seaction>
+
+                <div className='flex flex-row justify-end'>
+                    <button
+                        onClick={onClose}
+                        className="mt-4 px-4 py-2 bg-red-800 text-gray-200 rounded hover:bg-red-900"
+                    >
+                        Fechar
+                    </button>
                 </div>
 
-                {/* <div className="mb-4">
-                    <p className="mb-2">
-                        <strong>Endereço:</strong> {order.address.street}, {order.address.number} - {order.address.city}, {order.address.state} - {order.address.zipCode}
-                    </p>
-                    <p className="mb-2">
-                        <strong>Localização:</strong> {`Lat: ${order.address.location.lat}, Lng: ${order.address.location.lng}`}
-                    </p>
-                </div> */}
-
-                <div>
-                    <p className="mb-2">
-                        <strong>Produtos:</strong>
-                    </p>
-                    <ul>
-                        {order.products.map(product => (
-                            <li key={product.id.$oid} className="mb-4">
-                                <p className="mb-2">
-                                    <strong>Nome:</strong> {product.name}
-                                </p>
-                                <p className="mb-2">
-                                    <strong>Quantidade:</strong> {product.quantity}
-                                </p>
-                                <p className="mb-2">
-                                    <strong>Preço Total:</strong> {formatPrice(product.total_price_product)}
-                                </p>
-                                <p className="mb-2">
-                                    <strong>Sabores:</strong>
-                                </p>
-                                <ul className="ml-4">
-                                    {product.flavors.map(flavor => (
-                                        <li key={flavor.id.$oid} className="mb-2">
-                                            <p className="mb-2">
-                                                <strong>Nome:</strong> {flavor.name}
-                                            </p>
-                                            <p className="mb-2">
-                                                <strong>Quantidade:</strong> {flavor.quantity}
-                                            </p>
-                                            <p className="mb-2">
-                                                <strong>Preço Total:</strong> {formatPrice(flavor.total_price_flavor)}
-                                            </p>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
             </div>
         </div>
     );

@@ -25,7 +25,7 @@ export default function Sidebar() {
     ];
 
     return (
-        <div className="flex flex-col h-screen w-64 bg-gray-800 text-white">
+        <section className="flex flex-col h-screen w-64 bg-gray-800 text-white">
             <div className="flex-grow">
                 <nav className="mt-10">
                     {menuItems.map((item, index) => (
@@ -49,6 +49,6 @@ export default function Sidebar() {
                     <span className="ml-4">Logout</span>
                 </button>
             </div>
-        </div>
+        </section>
     );
 }
