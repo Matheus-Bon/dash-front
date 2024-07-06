@@ -1,8 +1,8 @@
 import "./globals.css";
 
-import { Inter } from "next/font/google";
-import { Toaster } from 'sonner'
+import Sidebar from "@/components/Sidebar";
 
+import { Toaster } from 'sonner'
 
 export const metadata = {
   title: "Create Next App",
@@ -12,8 +12,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
-      <body className='bg-slate-200'>
-        {children}
+      <body className='bg-slate-200 flex'>
+        <Sidebar />
+        <div className="flex flex-col flex-grow p-10">
+          {children}
+        </div>
         <span>
           <Toaster
             richColors
