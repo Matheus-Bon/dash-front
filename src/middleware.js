@@ -1,24 +1,31 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers'
 
-export function middleware(request) {
-    const token = request.cookies.get('jwt');
-    const { pathname } = request.nextUrl;
+export function middleware(req) {
+    const cookieStore = cookies();
+
+    const hasToken = cookieStore.has('auth');
+    const { pathname } = req.nextUrl;
 
     const publicPaths = ['/login'];
-    
-    if (!token && !publicPaths.includes(pathname)) {
-        return NextResponse.redirect(new URL('/login', request.url));
+
+    if (!hasToken && !publicPaths.includes(pathname)) {
+        return NextResponse.redirect(new URL('/login', req.url));
     }
 
-    if (token && pathname === '/login') {
-        return NextResponse.redirect(new URL('/', request.url));
+    if (hasToken && pathname === '/login') {
+        return NextResponse.redirect(new URL('/', req.url));
     }
 
-    return NextResponse.next();
+    const response = NextResponse.next();
+    // const token = cookieStore.get('auth').value;
+    // response.cookies.set('auth', token)
+
+    return response;
 }
 
 export const config = {
     matcher: [
-        
+        '/'
     ],
 };

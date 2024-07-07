@@ -16,14 +16,13 @@ const login = async (body) => {
     const { statusCode, data, status, message } = await api(route, options, body);
 
     if (statusCode === 200) {
-        cookies().set(
-            'jwt',
-            data.accessToken,
-            {
-                secure: true,
-                httpOnly: true
-            }
-        )
+        cookies().set({
+            name: 'auth',
+            value: data.accessToken,
+            httpOnly: true,
+            secure: true,
+            path: '/',
+        });
     }
 
     return { statusCode, data, status, message };

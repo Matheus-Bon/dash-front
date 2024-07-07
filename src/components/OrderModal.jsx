@@ -9,6 +9,8 @@ import PrintIcon from '@mui/icons-material/Print';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import MopedIcon from '@mui/icons-material/Moped';
+import editOrder from '@/services/orders/editOrderById';
+import { toast } from 'sonner';
 
 export default function OrderModal({ order, onClose }) {
 
@@ -25,20 +27,32 @@ export default function OrderModal({ order, onClose }) {
         'preparing': 'text-yellow-500'
     }
 
+    const confirmOrder = async () => {
+        const { data, statusCode } = await editOrder(order._id, { status: 'preparing' });
+
+        if (statusCode !== 200) {
+            toast.error(`Error ao atualizar status do pedido #${order.order_code}`);
+            return;
+        }
+
+        toast.success(`Preparando pedido #${order.order_code}`);
+        onClose()
+    }
+
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div className="bg-white rounded-lg p-6 shadow-md max-w-3xl w-full">
                 <section className='flex flex-row justify-between'>
                     <div className="flex flex-col mb-4 gap-1">
                         <h2 className="text-3xl font-semibold">
-                            {order.name}
+                            {order.user.name}
                         </h2>
                         <span className='flex gap-2'>
-                            <p>Pedido #{order.orderCode}</p>
+                            <p>Pedido #{order.order_code}</p>
                             <p>-</p>
                             <p>
                                 Feito às <span className='font-bold'>
-                                    {new Date(order.updatedAt).getHours()}:{new Date(order.updatedAt).getMinutes()}
+                                    {new Date(order.createdAt).toLocaleTimeString('pt-BR')}
                                 </span>
                             </p>
                             <p>-</p>
@@ -60,7 +74,7 @@ export default function OrderModal({ order, onClose }) {
                         {order.status === 'pending' && (
                             <>
                                 <button
-                                    onClick={() => console.log('Pedido confirmado')}
+                                    onClick={confirmOrder}
                                     className="p-3 my-3 rounded-lg bg-green-700 text-slate-200 font-semibold rounded hover:bg-green-900"
                                     title='Confirmar Pedido'
                                 >
@@ -97,10 +111,10 @@ export default function OrderModal({ order, onClose }) {
 
                 <seaction className='flex flex-col gap-3'>
                     <div className='m-2 p-4 border bg-slate-50'>
-                        <div className='flex flex-row justify-between gap-2'>
+                        <div className='flex flex-row justify-start gap-2'>
                             <LocationOnIcon />
                             <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia eveniet reprehenderit omnis facere odit impedit aliquam debitis unde, commodi consequuntur blanditiis excepturi fugit? Laborum quae inventore nemo maxime amet cumque!
+                                {order.address.body}
                             </p>
                         </div>
                     </div>
