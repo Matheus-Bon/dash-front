@@ -6,7 +6,13 @@ export default function OrderCard({ order, onClick }) {
         <div className="flex flex-col bg-white p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer" onClick={onClick}>
             <div className='flex flex-row justify-between'>
                 <h2 className="text-xl font-bold">Pedido #{order.orderCode}</h2>
-                <p className="text-gray-500 text-green-500">{order.status}</p>
+                <p className={
+                    order.status === 'pending' ? 'text-yellow-500' :
+                        order.status === 'preparing' ? 'text-green-500' :
+                            ''
+                }>
+                    {order.status}
+                </p>
             </div>
             <p className='font-extralight'>{order.name}</p>
             <p className='font-extralight'>Há {diffTimeMin(order.updatedAt)} minutos</p>

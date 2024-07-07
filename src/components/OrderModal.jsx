@@ -41,7 +41,11 @@ export default function OrderModal({ order, onClose }) {
                                 </span>
                             </p>
                             <p>-</p>
-                            <p>
+                            <p className={
+                                order.status === 'pending' ? 'text-yellow-500' :
+                                    order.status === 'preparing' ? 'text-green-500' :
+                                        ''
+                            }>
                                 {order.status}
                             </p>
                         </span>
