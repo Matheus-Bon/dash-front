@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import formatPrice from '@/utils/formatPrice';
 import Divider from '@mui/material/Divider';
@@ -6,13 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import PrintIcon from '@mui/icons-material/Print';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-
-{/* <button
-    onClick={onClose}
-    className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
->
-    Fechar
-</button> */}
+import MopedIcon from '@mui/icons-material/Moped';
 
 export default function OrderModal({ order, onClose }) {
 
@@ -22,6 +18,11 @@ export default function OrderModal({ order, onClose }) {
         for (const flavor of product.flavors) {
             productsToText += `\t${flavor.quantity}x ${flavor.name}\n`;
         }
+    }
+
+    const statusColor = {
+        'pending': 'text-red-500',
+        'preparing': 'text-yellow-500'
     }
 
     return (
@@ -41,11 +42,7 @@ export default function OrderModal({ order, onClose }) {
                                 </span>
                             </p>
                             <p>-</p>
-                            <p className={
-                                order.status === 'pending' ? 'text-yellow-500' :
-                                    order.status === 'preparing' ? 'text-green-500' :
-                                        ''
-                            }>
+                            <p className={statusColor[order.status]}>
                                 {order.status}
                             </p>
                         </span>
@@ -59,21 +56,41 @@ export default function OrderModal({ order, onClose }) {
                         >
                             <PrintIcon />
                         </button>
-                        <button
-                            onClick={onClose}
-                            className="p-3 my-3 rounded-lg bg-green-700 text-slate-200 font-semibold rounded hover:bg-green-900"
-                            title='Confirmar Pedido'
-                        >
-                            <CheckIcon />
-                        </button>
-                        <button
-                            onClick={onClose}
-                            className="p-3 my-3 rounded-lg bg-red-700 text-slate-200 font-semibold rounded hover:bg-red-900"
-                            title='Cancelar Pedido'
-                        >
-                            <CancelIcon />
-                        </button>
+
+                        {order.status === 'pending' && (
+                            <>
+                                <button
+                                    onClick={() => console.log('Pedido confirmado')}
+                                    className="p-3 my-3 rounded-lg bg-green-700 text-slate-200 font-semibold rounded hover:bg-green-900"
+                                    title='Confirmar Pedido'
+                                >
+                                    <CheckIcon />
+                                </button>
+                                <button
+                                    onClick={() => console.log('Pedido cancelado')}
+                                    className="p-3 my-3 rounded-lg bg-red-700 text-slate-200 font-semibold rounded hover:bg-red-900"
+                                    title='Cancelar Pedido'
+                                >
+                                    <CancelIcon />
+                                </button>
+                            </>
+                        )}
+
+                        {order.status === 'preparing' && (
+                            <>
+                                <button
+                                    onClick={() => console.log('Pedido confirmado')}
+                                    className="p-3 my-3 rounded-lg bg-green-700 text-slate-200 font-semibold rounded hover:bg-green-900"
+                                    title='Despachar Pedido'
+                                >
+                                    <MopedIcon />
+                                </button>
+                            </>
+                        )}
+
                     </div>
+
+
                 </section>
 
                 <Divider className='mb-5' />
@@ -101,7 +118,7 @@ export default function OrderModal({ order, onClose }) {
                 <div className='flex flex-row justify-end'>
                     <button
                         onClick={onClose}
-                        className="mt-4 px-4 py-2 bg-red-800 text-gray-200 rounded hover:bg-red-900"
+                        className="mt-4 px-4 py-2 bg-red-700 text-slate-200 rounded hover:bg-red-900"
                     >
                         Fechar
                     </button>
