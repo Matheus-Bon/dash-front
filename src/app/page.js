@@ -110,14 +110,18 @@ export default function Home() {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
-    // Fetch orders from backend
-    const fetchOrders = async () => {
-      const response = await getOrders();
-      console.log(response)
-      setOrders(response.data);
-    };
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const eventSource = new EventSource(API_BASE_URL);
 
-    fetchOrders();
+    if (typeof (EventSource) !== undefined) {
+      console.log('gg')
+    }
+
+    eventSource.onmessage = event => {
+      const eventData = JSON.parse(event.data);
+      setOrders(eventData)
+    }
+
   }, []);
 
   const pendingOrders = orders?.filter(order => order.status === 'pending');
