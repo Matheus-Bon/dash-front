@@ -36,7 +36,19 @@ export default function OrderModal({ order, onClose }) {
         }
 
         toast.success(`Preparando pedido #${order.order_code}`);
-        onClose()
+        onClose();
+    }
+
+    const cancelOrder = async () => {
+        const { data, statusCode } = await editOrder(order._id, { status: 'canceled' });
+
+        if (statusCode !== 200) {
+            toast.error(`Error ao atualizar status do pedido #${order.order_code}`);
+            return;
+        }
+
+        toast.success(`Pedido #${order.order_code} cancelado`);
+        onClose();
     }
 
     return (
@@ -81,7 +93,7 @@ export default function OrderModal({ order, onClose }) {
                                     <CheckIcon />
                                 </button>
                                 <button
-                                    onClick={() => console.log('Pedido cancelado')}
+                                    onClick={cancelOrder}
                                     className="p-3 my-3 rounded-lg bg-red-700 text-slate-200 font-semibold rounded hover:bg-red-900"
                                     title='Cancelar Pedido'
                                 >

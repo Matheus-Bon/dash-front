@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import OrderCard from '@/components/OrderCard';
 import OrderModal from '@/components/OrderModal';
 import getOrders from '@/services/orders/getOrders';
+import Loading from "@/components/Loading"
 
 
 // const orders = [
@@ -111,18 +112,25 @@ export default function Home() {
 
   useEffect(() => {
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-    const eventSource = new EventSource(API_BASE_URL);
+    const URL = `${API_BASE_URL}/orders`;
 
-    if (typeof (EventSource) !== undefined) {
-      console.log('gg')
-    }
+    const sse = new EventSource(
+      URL,
+      {
+        withCredentials: true
+      }
+    );
 
-    eventSource.onmessage = event => {
+    sse.onmessage = event => {
       const eventData = JSON.parse(event.data);
-      setOrders(eventData)
+      setOrders(eventData);
     }
 
   }, []);
+
+  if (!orders.length) {
+    return <Loading />
+  }
 
   const pendingOrders = orders?.filter(order => order.status === 'pending');
   const preparingOrders = orders?.filter(order => order.status === 'preparing');
