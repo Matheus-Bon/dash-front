@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="pt-BR">
       <body className='bg-slate-200 flex'>
         <Sidebar />
-        <div className="flex flex-col flex-grow p-10">
+        <div className="flex flex-col flex-grow p-10 h-screen">
           {children}
         </div>
         <span>

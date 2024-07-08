@@ -134,7 +134,11 @@ export default function Home() {
 
   const pendingOrders = orders?.filter(order => order.status === 'pending');
   const preparingOrders = orders?.filter(order => order.status === 'preparing');
-  const deliveredOrders = orders?.filter(order => order.status === 'delivered');
+  const deliveryOrders = orders?.filter(order => order.status === 'out_for_delivery');
+  const pickupOrders = orders?.filter(order => order.status === 'ready_for_pickup');
+  const completedOrders = orders?.filter(order => order.status === 'completed');
+
+
 
   const handleCardClick = (order) => {
     setSelectedOrder(order);
@@ -145,11 +149,12 @@ export default function Home() {
   };
 
   return (
-    <main className='flex flex-col gap-5'>
+    <main className='flex flex-col gap-5 overflow-y-auto'>
+
       <div className="p-6">
         <h1 className="text-2xl mb-6 font-bold">Pedidos pendentes</h1>
         {pendingOrders?.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5">
             {pendingOrders.map(order => (
               <OrderCard key={order._id} order={order} onClick={() => handleCardClick(order)} />
             ))}
@@ -171,6 +176,46 @@ export default function Home() {
           <p className="text-gray-500">Não há pedidos em preparo.</p>
         )}
       </div>
+
+      <div className="p-6">
+        <h1 className="text-2xl mb-6 font-bold">Pedidos em entrega</h1>
+        {deliveryOrders?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {deliveryOrders.map(order => (
+              <OrderCard key={order._id} order={order} onClick={() => handleCardClick(order)} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">Não há pedidos em entrega.</p>
+        )}
+      </div>
+
+      <div className="p-6">
+        <h1 className="text-2xl mb-6 font-bold">Pedidos prontos para retirada</h1>
+        {pickupOrders?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {pickupOrders.map(order => (
+              <OrderCard key={order._id} order={order} onClick={() => handleCardClick(order)} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">Não há pedidos prontos para retirada.</p>
+        )}
+      </div>
+
+      <div className="p-6">
+        <h1 className="text-2xl mb-6 font-bold">Pedidos concluídos</h1>
+        {completedOrders?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {completedOrders.map(order => (
+              <OrderCard key={order._id} order={order} onClick={() => handleCardClick(order)} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">Não há pedidos concluídos.</p>
+        )}
+      </div>
+
 
       {selectedOrder && (
         <OrderModal order={selectedOrder} onClose={handleCloseModal} />
