@@ -1,26 +1,27 @@
 'use client'
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import HomeIcon from '@mui/icons-material/Home';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import SportsMotorsportsIcon from '@mui/icons-material/SportsMotorsports';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Link from 'next/link'
+import logout from '@/services/auth/logout';
+import { useRouter } from 'next/navigation';
 
 export default function Sidebar() {
-    const router = useRouter();
+    const userRouter = useRouter();
 
-    const handleLogout = () => {
-        // Lógica para logout
-        console.log('Logout');
+    const handleLogout = async () => {
+        await logout();
+        userRouter.push('/login');
     };
 
     const menuItems = [
         { name: 'Início', icon: <HomeIcon />, path: '/' },
         { name: 'Produtos', icon: <InventoryIcon />, path: '/products' },
-        { name: 'Motoboys', icon: <SportsMotorsportsIcon />, path: '/motoboys' },
+        { name: 'Motoboys', icon: <SportsMotorsportsIcon />, path: '/deliveryMan' },
         { name: 'Perfil', icon: <PersonIcon />, path: '/profile' },
     ];
 
@@ -46,7 +47,7 @@ export default function Sidebar() {
                     className="flex items-center p-3 hover:bg-gray-700 w-full text-left"
                 >
                     <ExitToAppIcon />
-                    <span className="ml-4">Logout</span>
+                    <span className="ml-4">Sair</span>
                 </button>
             </div>
         </section>

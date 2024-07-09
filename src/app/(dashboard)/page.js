@@ -150,7 +150,6 @@ export default function Home() {
 
   return (
     <main className='flex flex-col gap-5 overflow-y-auto'>
-
       <div className="p-6">
         <h1 className="text-2xl mb-6 font-bold">Pedidos pendentes</h1>
         {pendingOrders?.length > 0 ? (
