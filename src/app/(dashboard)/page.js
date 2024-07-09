@@ -3,108 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import OrderCard from '@/components/OrderCard';
 import OrderModal from '@/components/OrderModal';
-import getOrders from '@/services/orders/getOrders';
 import Loading from "@/components/Loading"
 
-
-// const orders = [
-//   {
-//     "name": 'Matheus',
-//     "phone": "5521967505770",
-//     "_id": "6676fd98186b9862e7001181",
-//     "status": "pending",
-//     "delivery": true,
-//     "updatedAt": "2024-07-05T15:42:31.580Z",
-//     "address_id": {
-//       "$oid": "66755c1b1d29b644a331215e"
-//     },
-//     "orderCode": "158145",
-//     "payment": "PIX",
-//     "products": [
-//       {
-//         "id": "6677241369cc03b5a1969b6e",
-//         "name": "100 Salagdos",
-//         "quantity": 1,
-//         "total_price_product": 5000,
-//         "flavors": [
-//           {
-//             "id": "6679b922fd55fb32e82c1991",
-//             "name": "Quibe",
-//             "quantity": 50,
-//             "total_price_flavor": 5000
-//           },
-//           {
-//             "id": "6679b922fd55fb32e82c1991",
-//             "name": "Coxinha",
-//             "quantity": 50,
-//             "total_price_flavor": 5000
-//           },
-//           {
-//             "id": "6679b922fd55fb32e82c1991",
-//             "name": "Queijo",
-//             "quantity": 50,
-//             "total_price_flavor": 5000
-//           },
-//           {
-//             "id": "6679b922fd55fb32e82c1991",
-//             "name": "Coxinha",
-//             "quantity": 50,
-//             "total_price_flavor": 5000
-//           }
-//         ]
-//       }
-//     ],
-//     "total_price": 5500
-//   },
-//   {
-//     "name": 'Matheus',
-//     "phone": "5521967505770",
-//     "_id": "6676fd98186b9862e7001181",
-//     "status": "preparing",
-//     "delivery": true,
-//     "updatedAt": "2024-07-05T15:42:31.580Z",
-//     "address_id": {
-//       "$oid": "66755c1b1d29b644a331215e"
-//     },
-//     "orderCode": "158145",
-//     "payment": "PIX",
-//     "products": [
-//       {
-//         "id": "6677241369cc03b5a1969b6e",
-//         "name": "100 Salagdos",
-//         "quantity": 1,
-//         "total_price_product": 5000,
-//         "flavors": [
-//           {
-//             "id": "6679b922fd55fb32e82c1991",
-//             "name": "Quibe",
-//             "quantity": 50,
-//             "total_price_flavor": 5000
-//           },
-//           {
-//             "id": "6679b922fd55fb32e82c1991",
-//             "name": "Coxinha",
-//             "quantity": 50,
-//             "total_price_flavor": 5000
-//           },
-//           {
-//             "id": "6679b922fd55fb32e82c1991",
-//             "name": "Queijo",
-//             "quantity": 50,
-//             "total_price_flavor": 5000
-//           },
-//           {
-//             "id": "6679b922fd55fb32e82c1991",
-//             "name": "Coxinha",
-//             "quantity": 50,
-//             "total_price_flavor": 5000
-//           }
-//         ]
-//       }
-//     ],
-//     "total_price": 5500
-//   },
-// ]
 
 export default function Home() {
   const [orders, setOrders] = useState([]);
@@ -149,7 +49,10 @@ export default function Home() {
   };
 
   return (
-    <main className='flex flex-col gap-5 overflow-y-auto'>
+    <section className='flex flex-col gap-5 overflow-y-auto'>
+      <h1 className='font-semibold text-3xl mb-10'>
+        Gerenciar Pedidos
+      </h1>
       <div className="p-6">
         <h1 className="text-2xl mb-6 font-bold">Pedidos pendentes</h1>
         {pendingOrders?.length > 0 ? (
@@ -219,6 +122,6 @@ export default function Home() {
       {selectedOrder && (
         <OrderModal order={selectedOrder} onClose={handleCloseModal} />
       )}
-    </main>
+    </section>
   );
 }
