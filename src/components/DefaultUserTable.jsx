@@ -11,68 +11,28 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import getUsers from '@/services/users/getUsers';
-import deleteUser from '@/services/users/deleteUser';
-import { toast } from 'sonner';
 
 const columns = [
     { id: 'name', label: 'Nome', minWidth: 170 },
     { id: 'phone', label: 'Contato', minWidth: 80 },
+    // { id: 'email', label: 'Email', minWidth: 100 },
     { id: 'actions', label: 'Ações', minWidth: 50, align: 'center' },
 ];
 
-export default function DefaultTable() {
-    const [rows, setRows] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [search, setSearch] = React.useState('');
-    const [searchQuery, setSearchQuery] = React.useState('');
-    const [total, setTotal] = React.useState(0);
-
-    const fetchUsers = async (page, limit, search) => {
-        const { data, statusCode } = await getUsers({ page, limit, search });
-
-        if (statusCode !== 200) {
-            toast.error('Erro ao buscar entregadores. Tente novamente.');
-            return;
-        }
-
-        setRows(data.users);
-        setTotal(data.total);
-    };
-
-    React.useEffect(() => {
-        fetchUsers(page, rowsPerPage, searchQuery);
-    }, [page, rowsPerPage, searchQuery]);
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
+export default function DefaultUserTable({
+    rows,
+    total,
+    page,
+    rowsPerPage,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleDelete,
+    search,
+    setSearch,
+    handleSearchSubmit
+}) {
     const handleSearchChange = (event) => {
         setSearch(event.target.value);
-    };
-
-    const handleSearchSubmit = () => {
-        setSearchQuery(search);
-        setPage(0);
-    };
-
-    const handleDelete = async (id) => {
-        const { statusCode } = await deleteUser(id);
-
-        if (statusCode !== 204) {
-            toast.error('Erro ao excluir entregador. Tente novamente.');
-            return;
-        }
-
-        toast.success('Entregador excluído com sucesso.');
-        fetchUsers(page, rowsPerPage, searchQuery);
     };
 
     return (
@@ -115,8 +75,8 @@ export default function DefaultTable() {
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
                                                     {column.id === 'actions' ? (
-                                                        <IconButton onClick={() => handleDelete(row._id)} title='Excluir Entregador'>
-                                                            <DeleteIcon />
+                                                        <IconButton onClick={() => handleDelete(row._id)}>
+                                                            <DeleteIcon className='text-red-800'/>
                                                         </IconButton>
                                                     ) : (
                                                         value
