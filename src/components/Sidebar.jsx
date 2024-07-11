@@ -19,9 +19,9 @@ export default function Sidebar() {
     };
 
     const menuItems = [
-        { name: 'Início', icon: <HomeIcon />, path: '/' },
-        { name: 'Produtos', icon: <InventoryIcon />, path: '/products' },
-        { name: 'Motoboys', icon: <SportsMotorsportsIcon />, path: '/deliveryMan' },
+        { name: 'Pedidos', icon: <HomeIcon />, path: '/' },
+        { name: 'Catálogo', icon: <InventoryIcon />, path: '/catalog' },
+        { name: 'Entregadores', icon: <SportsMotorsportsIcon />, path: '/deliveryMan' },
         { name: 'Perfil', icon: <PersonIcon />, path: '/profile' },
     ];
 
