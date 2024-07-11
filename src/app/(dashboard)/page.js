@@ -14,7 +14,7 @@ export default function Home() {
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
     const URL = `${API_BASE_URL}/orders?token=${document.cookie.replace('auth=', '')}`;
 
-    const sse = new EventSource(URL, { withCredentials: true });
+    const sse = new EventSource(URL);
 
     sse.onmessage = event => {
       const eventData = JSON.parse(event.data);
