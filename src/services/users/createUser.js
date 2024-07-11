@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidateTag } from 'next/cache'
 import api from "../api";
 
 const createUser = async (body) => {
@@ -13,6 +14,9 @@ const createUser = async (body) => {
     }
 
     const { statusCode, data, status, message } = await api(route, options, body);
+
+    revalidateTag('index-users');
+
     return { statusCode, data, status, message };
 }
 

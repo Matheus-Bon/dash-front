@@ -12,14 +12,9 @@ export default function Home() {
 
   useEffect(() => {
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-    const URL = `${API_BASE_URL}/orders`;
+    const URL = `${API_BASE_URL}/orders?token=${document.cookie.replace('auth=', '')}`;
 
-    const sse = new EventSource(
-      URL,
-      {
-        withCredentials: true
-      }
-    );
+    const sse = new EventSource(URL, { withCredentials: true });
 
     sse.onmessage = event => {
       const eventData = JSON.parse(event.data);

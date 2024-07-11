@@ -19,7 +19,6 @@ const login = async (body) => {
         cookies().set({
             name: 'auth',
             value: data.accessToken,
-            httpOnly: true,
             secure: true,
             path: '/',
         });

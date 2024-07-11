@@ -9,14 +9,14 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const defaultHeaders = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '',
-    cookie: `auth=${cookieStore.get('auth')?.value}`
+    'Authorization': `Bearer ${cookieStore.get('auth')?.value}`
 };
 
 const api = async (url, options = {}, body) => {
     const config = {
         method: 'GET',
-        headers: defaultHeaders,
         ...options,
+        headers: defaultHeaders,
         body: JSON.stringify(body)
     };
 
