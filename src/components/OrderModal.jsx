@@ -14,9 +14,14 @@ import PaidIcon from '@mui/icons-material/Paid';
 import PaymentIcon from '@mui/icons-material/Payment';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import PrintableOrder from './PrintableOrder';
 import { toast } from 'sonner';
 
 export default function OrderModal({ order, onClose }) {
+    const printRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => printRef.current,
+    });
 
     const productsToText = { title: '', products: '' };
     for (const product of order.products) {
@@ -108,7 +113,7 @@ export default function OrderModal({ order, onClose }) {
 
                     <div className='flex flex-row gap-3'>
                         <button
-                            onClick={onClose}
+                            onClick={handlePrint}
                             className="p-3 my-3 rounded-lg bg-gray-700 text-slate-200 font-semibold hover:bg-gray-900"
                             title='Imprimir Pedido'
                         >
