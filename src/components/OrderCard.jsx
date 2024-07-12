@@ -1,3 +1,5 @@
+'use client'
+
 import diffTimeMin from '@/utils/diffTimeMin';
 import React from 'react';
 
