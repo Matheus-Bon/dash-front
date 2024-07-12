@@ -13,6 +13,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ProductTable from './ProductTable';
+
 
 const DefaultAccordion = ({ items }) => {
     return (
@@ -33,7 +35,6 @@ const DefaultAccordion = ({ items }) => {
                         control={<Switch color="primary" />}
                         label="Pausar"
                         labelPlacement="top"
-
                     />
                     <Button variant="text" className='h-fit py-2 text-center' title='Editar Categoria'>
                         <MoreVertIcon />
@@ -61,8 +62,10 @@ const DefaultAccordion = ({ items }) => {
                     </AccordionSummary>
                     <AccordionDetails>
 
+                        <ProductTable
+                            rows={[{ name: '100 salgados', price: 55, status: true }]}
+                        />
 
-                       
 
                     </AccordionDetails>
                 </Accordion>
