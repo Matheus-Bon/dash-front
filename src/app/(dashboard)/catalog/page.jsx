@@ -25,11 +25,9 @@ export default function Products() {
           Catálogo
         </h1>
       </div>
-
-
-      <Accordion />
-
-
+      <div className='flex flex-col gap-5 items-center'>
+        <Accordion />
+      </div>
     </section>
   )
 }

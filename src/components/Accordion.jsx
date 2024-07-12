@@ -9,50 +9,63 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import AddIcon from '@mui/icons-material/Add';
+import SettingsIcon from '@mui/icons-material/Settings';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const DefaultAccordion = ({ items }) => {
     return (
-        <>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1-content"
-                    id="panel1-header"
-                    classes={{
-                        content: 'accordion-summary-content',
+        <div className='drop-shadow-lg w-full'>
+            <section className='bg-white w-full px-5 pb-14 pt-8 rounded-t-md flex flex-row justify-between'>
+                <div>
+                    <h3 className='font-semibold font-mono text-3xl'>
+                        Combos
+                    </h3>
+                </div>
+
+                <div className='flex flex-row gap-2 items-center'>
+                    <Button variant="contained" className='h-fit py-2'>
+                        <AddIcon className='mr-2' />Adicionar Produto
+                    </Button>
+                    <FormControlLabel
+                        value="top"
+                        control={<Switch color="primary" />}
+                        label="Pausar"
+                        labelPlacement="top"
+
+                    />
+                    <Button variant="text" className='h-fit py-2 text-center' title='Editar Categoria'>
+                        <MoreVertIcon />
+                    </Button>
+                </div>
+
+            </section>
+            <section>
+                <Accordion
+                    sx={{
+                        borderTopLeftRadius: '0px !important',
+                        borderTopRightRadius: '0px !important',
                     }}
-                    className='p-10 pt-2 align-top'
+                    className='shadow-none'
                 >
-                    <div className='w-10/12 flex justify-between align-top'>
-                        <div>
-                            <h3 className='font-bold text-2xl'>
-                                Combos
-                            </h3>
-                        </div>
-                        <div>
-                            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                Adicionar Item
-                            </button>
-
-                            <span className='ml-5'>
-                                <FormControlLabel
-                                    value="top"
-                                    control={<Switch color="primary" />}
-                                    label="Top"
-                                    labelPlacement="top"
-                                />
-                            </span>
-
-                        </div>
-                    </div>
-
-                </AccordionSummary>
-                <AccordionDetails>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </AccordionDetails>
-            </Accordion>
-        </>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1-content"
+                        id="panel1-header"
+                    >
+                        <VisibilityIcon className='text-gray-500' />
+                        <span className='ml-2 font-semibold'>
+                            Ver produtos
+                        </span>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                    </AccordionDetails>
+                </Accordion>
+            </section>
+        </div >
     );
 };
 
