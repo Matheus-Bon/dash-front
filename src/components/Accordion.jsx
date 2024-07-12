@@ -50,7 +50,7 @@ const DefaultAccordion = ({ items }) => {
                     className='shadow-none'
                 >
                     <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
+                        // expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1-content"
                         id="panel1-header"
                     >
@@ -60,8 +60,10 @@ const DefaultAccordion = ({ items }) => {
                         </span>
                     </AccordionSummary>
                     <AccordionDetails>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+
+
+                       
+
                     </AccordionDetails>
                 </Accordion>
             </section>
