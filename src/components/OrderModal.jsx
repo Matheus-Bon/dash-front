@@ -14,14 +14,51 @@ import PaidIcon from '@mui/icons-material/Paid';
 import PaymentIcon from '@mui/icons-material/Payment';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import PrintableOrder from './PrintableOrder';
+import qz from 'qz-tray';
 import { toast } from 'sonner';
 
 export default function OrderModal({ order, onClose }) {
-    const printRef = useRef();
-    const handlePrint = useReactToPrint({
-        content: () => printRef.current,
-    });
+
+    React.useEffect(() => {
+        qz.api.setCertificatePromise((resolve, reject) => {
+            // Resolve with your certificate (optional)
+            resolve();
+        });
+
+        qz.api.setSignaturePromise((toSign) => {
+            return (resolve, reject) => {
+                // Sign message using your private key (optional)
+                resolve();
+            };
+        });
+
+        qz.websocket.connect().then(() => {
+            console.log("Conectado ao QZ Tray");
+        }).catch((err) => console.error(err));
+    }, []);
+
+    const handlePrint = () => {
+        const config = qz.configs.create({
+            type: 'usb',  // Tipo de conexão USB
+            name: 'NOME_DA_IMPRESSORA_USB'  // Nome da impressora USB
+        });
+
+        const data = [
+            '\x1B\x61\x01',  // Centralizar texto
+            'Comanda\n',
+            '----------------------\n',
+            '\x1B\x61\x00',  // Alinhar à esquerda
+            'Produto: Café\n',
+            'Quantidade: 2\n',
+            'Preço: R$ 5,00\n',
+            '\x1D\x56\x41',  // Corte parcial
+        ];
+
+        qz.print(config, data).then(() => {
+            console.log("Impressão realizada com sucesso!");
+        }).catch(err => console.error(err));
+    };
+
 
     const productsToText = { title: '', products: '' };
     for (const product of order.products) {
