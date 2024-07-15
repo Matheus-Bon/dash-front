@@ -110,7 +110,7 @@ export default function OrderModal({ order, onClose }) {
 
                     <div className='flex flex-row gap-3'>
                         <button
-                            // onClick={handlePrint}
+                            onClick={() => window.print()}
                             className="p-3 my-3 rounded-lg bg-gray-700 text-slate-200 font-semibold hover:bg-gray-900"
                             title='Imprimir Pedido'
                         >

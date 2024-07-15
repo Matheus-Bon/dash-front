@@ -1,36 +1,31 @@
-import { printer as ThermalPrinter, types as PrinterTypes } from 'node-thermal-printer';
+const ThermalPrinter = require("node-thermal-printer").printer;
+const PrinterTypes = require("node-thermal-printer").types;
+
+const printer = new ThermalPrinter({
+    type: PrinterTypes.EPSON,
+    interface: process.env.PRINTER_TCP,
+});
 
 export async function POST(request) {
-    const printer = new ThermalPrinter({
-        type: PrinterTypes.EPSON, // 'star' or 'epson'
-        interface: 'usb',
-    });
-
-    printer.alignCenter();
-    printer.println("Tabela de Exemplo");
-    printer.drawLine();
-
-    printer.tableCustom([
-        { text: "Coluna 1", align: "LEFT", width: 0.33 },
-        { text: "Coluna 2", align: "CENTER", width: 0.33 },
-        { text: "Coluna 3", align: "RIGHT", width: 0.33 }
-    ]);
-
-    printer.drawLine();
-
-    printer.tableCustom([
-        { text: "Dado 1", align: "LEFT", width: 0.33 },
-        { text: "Dado 2", align: "CENTER", width: 0.33 },
-        { text: "Dado 3", align: "RIGHT", width: 0.33 }
-    ]);
-
-    printer.cut();
-
     try {
-        await printer.execute();
-        return Response.json({ message: 'Impressão bem-sucedida' });
+        // Conecte à impressora
+        const isConnected = await printer.isPrinterConnected();
+        console.log('isConnected', isConnected)
+        if (!isConnected) {
+            throw new Error("Não foi possível conectar à impressora");
+        }
+
+        // Adicione o conteúdo a ser impresso
+        printer.println("Olá, isso é um teste de impressão via TCP!");
+
+        // Envie o comando de impressão
+        const executeResult = await printer.execute();
+        if (executeResult) {
+            console.log("Impressão realizada com sucesso!");
+        } else {
+            console.error("Falha ao executar a impressão");
+        }
     } catch (error) {
-        console.error("Erro na impressão", error);
-        return Response.json({ message: 'Erro na impressão', error });
+        console.error("Erro ao tentar imprimir:", error);
     }
 }
