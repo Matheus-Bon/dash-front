@@ -14,51 +14,10 @@ import PaidIcon from '@mui/icons-material/Paid';
 import PaymentIcon from '@mui/icons-material/Payment';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import qz from 'qz-tray';
 import { toast } from 'sonner';
+import PrintButton from './PrintButton';
 
 export default function OrderModal({ order, onClose }) {
-
-    React.useEffect(() => {
-        qz.api.setCertificatePromise((resolve, reject) => {
-            // Resolve with your certificate (optional)
-            resolve();
-        });
-
-        qz.api.setSignaturePromise((toSign) => {
-            return (resolve, reject) => {
-                // Sign message using your private key (optional)
-                resolve();
-            };
-        });
-
-        qz.websocket.connect().then(() => {
-            console.log("Conectado ao QZ Tray");
-        }).catch((err) => console.error(err));
-    }, []);
-
-    const handlePrint = () => {
-        const config = qz.configs.create({
-            type: 'usb',  // Tipo de conexão USB
-            name: 'NOME_DA_IMPRESSORA_USB'  // Nome da impressora USB
-        });
-
-        const data = [
-            '\x1B\x61\x01',  // Centralizar texto
-            'Comanda\n',
-            '----------------------\n',
-            '\x1B\x61\x00',  // Alinhar à esquerda
-            'Produto: Café\n',
-            'Quantidade: 2\n',
-            'Preço: R$ 5,00\n',
-            '\x1D\x56\x41',  // Corte parcial
-        ];
-
-        qz.print(config, data).then(() => {
-            console.log("Impressão realizada com sucesso!");
-        }).catch(err => console.error(err));
-    };
-
 
     const productsToText = { title: '', products: '' };
     for (const product of order.products) {
@@ -128,6 +87,7 @@ export default function OrderModal({ order, onClose }) {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div className="bg-white rounded-lg p-6 shadow-md max-w-3xl w-full">
+                <PrintButton/>
                 <section className='flex flex-row justify-between'>
                     <div className="flex flex-col mb-4 gap-1">
                         <h2 className="text-3xl font-semibold">
@@ -150,7 +110,7 @@ export default function OrderModal({ order, onClose }) {
 
                     <div className='flex flex-row gap-3'>
                         <button
-                            onClick={handlePrint}
+                            // onClick={handlePrint}
                             className="p-3 my-3 rounded-lg bg-gray-700 text-slate-200 font-semibold hover:bg-gray-900"
                             title='Imprimir Pedido'
                         >
