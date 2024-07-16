@@ -1,31 +1,40 @@
-const ThermalPrinter = require("node-thermal-printer").printer;
-const PrinterTypes = require("node-thermal-printer").types;
-
-const printer = new ThermalPrinter({
-    type: PrinterTypes.EPSON,
-    interface: process.env.PRINTER_TCP,
-});
+const ThermalPrinter = require('node-thermal-printer').printer;
+const PrinterTypes = require('node-thermal-printer').types;
+const usb = require('escpos-usb');
 
 export async function POST(request) {
     try {
-        // Conecte à impressora
-        const isConnected = await printer.isPrinterConnected();
-        console.log('isConnected', isConnected)
-        if (!isConnected) {
-            throw new Error("Não foi possível conectar à impressora");
-        }
+        const { orderDetails } = request.body;
 
-        // Adicione o conteúdo a ser impresso
-        printer.println("Olá, isso é um teste de impressão via TCP!");
+        let printer = new ThermalPrinter({
+            type: PrinterTypes.EPSON,
+            interface: usb()
+        });
 
-        // Envie o comando de impressão
-        const executeResult = await printer.execute();
-        if (executeResult) {
-            console.log("Impressão realizada com sucesso!");
-        } else {
-            console.error("Falha ao executar a impressão");
+        printer.alignCenter();
+        printer.println("Order Details");
+        printer.drawLine();
+        printer.alignLeft();
+        orderDetails.products.forEach(product => {
+            printer.println(`${product.quantity}x ${product.name}`);
+            product.flavors.forEach(flavor => {
+                printer.println(`  - ${flavor.quantity}x ${flavor.name}`);
+            });
+        });
+        printer.drawLine();
+        printer.println(`Total: ${orderDetails.totalPrice}`);
+        printer.cut();
+
+        try {
+            await printer.execute();
+            console.log("Print done!");
+            return Response.json("Print done!");
+        } catch (error) {
+            console.error("Print failed:", error);
+            return Response.json("Print failed");
         }
     } catch (error) {
-        console.error("Erro ao tentar imprimir:", error);
+        console.error("Error:", error);
+        return Response.json("Server error");
     }
 }

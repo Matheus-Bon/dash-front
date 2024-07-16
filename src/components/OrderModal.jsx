@@ -87,7 +87,6 @@ export default function OrderModal({ order, onClose }) {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div className="bg-white rounded-lg p-6 shadow-md max-w-3xl w-full">
-                <PrintButton/>
                 <section className='flex flex-row justify-between'>
                     <div className="flex flex-col mb-4 gap-1">
                         <h2 className="text-3xl font-semibold">
@@ -109,13 +108,8 @@ export default function OrderModal({ order, onClose }) {
                     </div>
 
                     <div className='flex flex-row gap-3'>
-                        <button
-                            onClick={() => window.print()}
-                            className="p-3 my-3 rounded-lg bg-gray-700 text-slate-200 font-semibold hover:bg-gray-900"
-                            title='Imprimir Pedido'
-                        >
-                            <PrintIcon />
-                        </button>
+                        
+                        <PrintButton />
 
                         {order.status === 'pending' && (
                             <>
