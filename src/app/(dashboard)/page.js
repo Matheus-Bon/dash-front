@@ -12,12 +12,16 @@ export default function Home() {
 
   const handleConnectUSB = () => {
     if (confirm("Você deseja conceder permissão para acessar o dispositivo USB?")) {
-      navigator.usb.requestDevice({ filters: [] }).then(function (device) {
-        localStorage.setItem('vendorId', device.vendorId)
-        console.log(device);
-      }).catch(error => {
-        console.error(error);
-      });
+      let device;
+      navigator.usb.requestDevice({ filters: [] })
+        .then(function (selectedDevice) {
+          device = selectedDevice;
+          return device.open();
+        })
+        .then(() => device.selectConfiguration(1))
+        .then(() => device.claimInterface(device.configuration.interfaces[1].interfaceNumber))
+        .then(() => console.log(device))
+        .catch(error => console.error(error));
     }
   };
 

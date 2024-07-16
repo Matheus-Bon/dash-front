@@ -87,7 +87,7 @@ export default function OrderModal({ order, onClose }) {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div className="bg-white rounded-lg p-6 shadow-md max-w-3xl w-full">
-                <section className='flex flex-row justify-between'>
+                <div className='flex flex-row justify-between'>
                     <div className="flex flex-col mb-4 gap-1">
                         <h2 className="text-3xl font-semibold">
                             {order.user.name}
@@ -108,8 +108,8 @@ export default function OrderModal({ order, onClose }) {
                     </div>
 
                     <div className='flex flex-row gap-3'>
-                        
-                        <PrintButton />
+
+                        <PrintButton order={order} />
 
                         {order.status === 'pending' && (
                             <>
@@ -155,11 +155,11 @@ export default function OrderModal({ order, onClose }) {
                         )}
 
                     </div>
-                </section>
+                </div>
 
                 <Divider className='mb-5' />
 
-                <seaction className='flex flex-col gap-3'>
+                <div className='flex flex-col gap-3'>
                     <div className='m-2 p-4 border bg-slate-50'>
                         <div className='flex flex-col justify-start gap-2'>
                             <div className='flex flex-row gap-2 mb-1'>
@@ -232,7 +232,7 @@ export default function OrderModal({ order, onClose }) {
                             </span>
                         </div>
                     </div>
-                </seaction>
+                </div>
 
                 <div className='flex flex-row justify-end'>
                     <button
