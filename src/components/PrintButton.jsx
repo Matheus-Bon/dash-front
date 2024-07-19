@@ -10,17 +10,19 @@ export default function PrintButton({ order }) {
     const handlePrint = async () => {
         try {
             const deviceId = parseInt(localStorage.getItem('vendorId'));
-            const device = await navigator.usb.requestDevice({ filters: [{ vendorId: deviceId }] }); // Substitua pelo vendorId da sua impressora
+
+            // const device = await navigator.usb.requestDevice({ filters: [{ vendorId: deviceId }] });
+            const device = await navigator.usb.getDevices().then(devices => devices.find(el => el.vendorId === deviceId));
             await device.open();
             await device.selectConfiguration(1);
-            await device.claimInterface(device.configuration.interfaces[1].interfaceNumber)
+            await device.claimInterface(device.configuration.interfaces[1].interfaceNumber);
 
             const encoder = new TextEncoder();
-            const d = buildPrintData(order)
-            console.log(d)
-            // const data = encoder.encode(buildPrintData(order));
-            // const endpoint = device.configuration.interfaces[1].alternate.endpoints[0].endpointNumber;
-            // await device.transferOut(endpoint, data);
+            // const d = buildPrintData(order)
+
+            const data = encoder.encode(buildPrintData(order));
+            const endpoint = device.configuration.interfaces[1].alternate.endpoints[0].endpointNumber;
+            await device.transferOut(endpoint, data);
 
             await device.close();
             toast.success('Pedido impresso com sucesso!');
@@ -37,14 +39,15 @@ export default function PrintButton({ order }) {
         let printData = '';
 
         // Adicionar informações do cabeçalho
-        printData += '---------- BOCADINHAS SALGADERIA ----------\n';
+        printData += '\n---------- BOCADINHAS SALGADERIA ----------\n';
         printData += `Data: ${new Date(createdAt).toLocaleDateString()} ${new Date(createdAt).toLocaleTimeString()}\n`;
-        printData += `Código do Pedido: ${order_code}\n\n`;
+        printData += `Codigo do Pedido: ${order_code}\n\n`;
+        printData += `Status do Pedido: ${statusLabel}\n`;
 
         // Adicionar informações do cliente e endereço
         printData += `Cliente: ${user.name}\n`;
-        printData += `Telefone: ${user.phone}\n`;
-        printData += `Endereço: ${address.body}\n`;
+        printData += `Telefone: ${formatPhone(user.phone)}\n`;
+        printData += `Endereco: ${address.body}\n`;
         printData += `----------------------------------------\n`;
 
         // Adicionar lista de produtos
@@ -52,22 +55,22 @@ export default function PrintButton({ order }) {
         products.forEach((product, index) => {
             printData += `${index + 1}. ${product.name}\n`;
             printData += `   Quantidade: ${product.quantity}\n`;
-            printData += `   Preço Unitário: ${(product.total_price_product / product.quantity).toFixed(2)}\n`;
-            printData += `   Total: ${(product.total_price_product / 100).toFixed(2)}\n`;
+            // printData += `   Preço Unitário: ${formatPrice(product.total_price_product / product.quantity)}\n`;
+            printData += `   Total: ${formatPrice(product.total_price_product)}\n`;
             if (product.flavors.length > 0) {
-                printData += `   Sabores: ${product.flavors.join(', ')}\n`;
+                printData += `   Sabores:\n`;
+
+                for (const flavor of product.flavors) {
+                    printData += `      x${flavor.quantity}   ${flavor.name}\n`;
+                }
             }
         });
 
         // Adicionar total do pedido e método de pagamento
         printData += `----------------------------------------\n`;
         printData += `Total do Pedido: ${(total_price / 100).toFixed(2)}\n`;
-        printData += `Método de Pagamento: ${paymentLabel}\n`;
+        printData += `Metodo de Pagamento: ${paymentLabel}\n`;
 
-        // Adicionar status do pedido
-        printData += `Status do Pedido: ${statusLabel}\n`;
-
-        // Retornar os dados formatados para impressão
         return printData;
     };
 

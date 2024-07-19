@@ -10,21 +10,6 @@ export default function Home() {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const handleConnectUSB = () => {
-    if (confirm("Você deseja conceder permissão para acessar o dispositivo USB?")) {
-      let device;
-      navigator.usb.requestDevice({ filters: [] })
-        .then(function (selectedDevice) {
-          device = selectedDevice;
-          return device.open();
-        })
-        .then(() => device.selectConfiguration(1))
-        .then(() => device.claimInterface(device.configuration.interfaces[1].interfaceNumber))
-        .then(() => console.log(device))
-        .catch(error => console.error(error));
-    }
-  };
-
   useEffect(() => {
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
     const URL = `${API_BASE_URL}/orders?token=${document.cookie.replace('auth=', '')}`;
@@ -63,12 +48,6 @@ export default function Home() {
       <h1 className='font-semibold text-3xl mb-10'>
         Gerenciar Pedidos
       </h1>
-      <button
-        className='mb-5 p-2 bg-blue-500 text-white rounded'
-        onClick={handleConnectUSB}
-      >
-        Conectar Dispositivo USB
-      </button>
       <div className="p-6">
         <h1 className="text-2xl mb-6 font-bold">Pedidos pendentes</h1>
         {pendingOrders?.length > 0 ? (
