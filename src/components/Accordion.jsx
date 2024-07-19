@@ -19,7 +19,7 @@ import ProductTable from './ProductTable';
 const DefaultAccordion = ({ items }) => {
     return (
         <div className='drop-shadow-lg w-full'>
-            <section className='bg-white w-full px-5 pb-14 pt-8 rounded-t-md flex flex-row justify-between'>
+            <section className='bg-white w-full px-5 pb-5 pt-8 rounded-t-md flex flex-row justify-between'>
                 <div>
                     <h3 className='font-semibold font-mono text-3xl'>
                         Combos

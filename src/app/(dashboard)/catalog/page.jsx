@@ -1,23 +1,33 @@
+'use client'
 
-import Accordion from '@/components/Accordion'
-import React from 'react'
+import React, { useState } from 'react';
+import Accordion from '@/components/Accordion';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import CategoryModal from '@/components/CategoryModal';
+import FlavorModal from '@/components/FlavorModal';
 
-const items = [
-  {
-    title: "Combo 25 salgados + 10 mini churros",
-    price: "R$ 31,90",
-    // image: "path/to/image1.jpg",
-    status: "Pausado",
-  },
-  {
-    title: "Combo 50 salgados + 20 mini churros",
-    price: "R$ 51,00",
-    // image: "path/to/image2.jpg",
-    status: "Pausado",
-  },
-];
 
 export default function Products() {
+  const [selectedCategory, setSelectedCategory] = useState(false);
+  const [selectedFlavor, setSelectedFlavor] = useState(false);
+
+  const openCategoryModal = () => {
+    setSelectedCategory(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedCategory(false);
+  };
+
+  const openFlavorModal = () => {
+    setSelectedFlavor(true);
+  };
+
+  const handleCloseFlavorModal = () => {
+    setSelectedFlavor(false);
+  };
+
   return (
     <section>
       <div className='mb-10'>
@@ -25,9 +35,47 @@ export default function Products() {
           Catálogo
         </h1>
       </div>
+      <div className='mb-20 flex flex-row justify-between gap-20'>
+
+        <div className='bg-white pt-5 pl-5 pb-8 w-7/12 shadow-lg flex flex-col'>
+          <div className='mb-5'>
+            <h1 className='font-medium text-xl'>
+              Categorias
+            </h1>
+          </div>
+          <div>
+            <Button variant="contained" className='h-fit py-2' onClick={() => openCategoryModal()}>
+              Criar Categoria
+            </Button>
+          </div>
+        </div>
+
+        <div className='bg-white pt-5 pl-5 w-7/12 shadow-lg flex flex-col'>
+          <div className='mb-5'>
+            <h1 className='font-medium text-xl'>
+              Sabores
+            </h1>
+          </div>
+          <div>
+            <Button variant="contained" className='h-fit py-2' onClick={() => openFlavorModal()}>
+              Configurar sabores
+            </Button>
+          </div>
+        </div>
+      </div>
       <div className='flex flex-col gap-5 items-center'>
         <Accordion />
       </div>
+
+      {selectedCategory && (
+        <CategoryModal onClose={handleCloseModal} />
+      )}
+
+      {selectedFlavor && (
+        <FlavorModal onClose={handleCloseFlavorModal} />
+      )}
+
+
     </section>
   )
 }
