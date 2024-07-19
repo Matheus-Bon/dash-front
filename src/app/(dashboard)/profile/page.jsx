@@ -9,6 +9,7 @@ export default function Home() {
       navigator.usb.requestDevice({ filters: [] })
         .then(function (selectedDevice) {
           device = selectedDevice;
+          localStorage.setItem('vendorId', device.vendorId)
           return device.open();
         })
         .then(() => device.selectConfiguration(1))
