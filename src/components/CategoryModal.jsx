@@ -2,14 +2,11 @@
 
 import React, { useState } from 'react';
 import { toast } from 'sonner';
+import createCategory from '@/services/category/createCategory';
 
 export default function CategoryModal({ onClose }) {
     const [formData, setFormData] = useState({
         name: '',
-        phone: '',
-        email: '',
-        password: 'Mudar@2024',
-        role: 'delivery_man'
     });
 
     const handleChange = (e) => {
@@ -23,20 +20,14 @@ export default function CategoryModal({ onClose }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.phone || !formData.name) {
+        if (!formData.name) {
             toast.warning('Os campos devem ser preenchidos')
         }
 
-        const email = `${formData.phone}@email.com`;
-        const phone = `55${formData.phone}`;
-
-        formData.email = email;
-        formData.phone = phone;
-
-        const result = ''
+        const result = await createCategory();
 
         if (result.statusCode === 201) {
-            toast.success('Entregador criado com sucesso');
+            toast.success('Categoria criada com sucesso');
             onClose();
             return;
         }
@@ -61,25 +52,6 @@ export default function CategoryModal({ onClose }) {
                             onChange={handleChange}
                             className="mt-1 p-2 w-full border rounded-md"
                             required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Celular</label>
-                        <input
-                            type="text"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            placeholder='21999999999'
-                            className="mt-1 p-2 w-full border rounded-md"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="hidden"
-                            name="role"
-                            value={formData.role}
                         />
                     </div>
                     <div className="flex justify-end">
