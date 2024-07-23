@@ -24,7 +24,8 @@ export default function CategoryModal({ onClose }) {
             toast.warning('Os campos devem ser preenchidos')
         }
 
-        const result = await createCategory();
+        const body = { name: formData.name };
+        const result = await createCategory(body);
 
         if (result.statusCode === 201) {
             toast.success('Categoria criada com sucesso');
